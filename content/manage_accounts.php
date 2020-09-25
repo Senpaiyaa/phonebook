@@ -6,18 +6,17 @@
         $contact_id = $contact["contact_id"];
         $fullName  = $contact["first_name"].' '.$contact["last_name"];
         $email = $contact["email"];
-        $mail = '<a href="mailto:' . $email . '"> ' . $email . ' </a>';
-        $edit = '<a id="edit" class="pointer pull-right" onClick="update_contact('.$contact_id.')"><span class="glyphicon glyphicon-pencil"></span> Edit</a>';
-        $delete = '<a class="pointer pull-right link-red" style="margin-left: 15px;" onClick="show_delete_modal('.$contact_id.')"><span class="glyphicon glyphicon-remove"></span> Delete</a>';
+        $mail =  $email;
+        $reactivate = '<a class="pointer pull-right btn btn-success" onClick="show_restore_modal('.$contact_id.')">Reactivate</a>';
         $html = '
             <tr id="'.$contact['contact_id'].'" class="td-contact">
                 <td class="image text-center"><img src="'.$contact["path"].'" alt="Photo" width="100" height="100"></td>
-                <td class="firstName text-center"><a href="view_contact.php?contact_id='.$contact_id.'">' . $fullName . '</a></td>
+                <td class="firstName text-center">' . $fullName . '</td>
                 <td class="email text-center">' . $mail . '</td>
                 <td class="contact_number text-center">' . $contact["contact_number"] . '</td>
                 <td class="address text-center">' . $contact["address"] . '</td>
 
-                <td>' . $delete . $edit . '</td>
+                <td>' . $reactivate . '</td>
             </tr>';
         return $html;
     }
@@ -92,28 +91,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            List of Available Contacts
-                            <div class="pull-right button_option">
-                                <a href="insert_contact.php" class="btn btn-primary insertContactButton">New Contact</a>
-                                <ul class="nav navbar-right item_config">
-                                        <li class="dropdown pull-right">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                <i class="fa fa-ellipsis-h"></i>
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                <li class="visible-sm visible-xs">
-                                                    <a href="new_employee.php"><i class="glyphicon glyphicon-plus"></i> Add New Employee </a>
-                                                </li>
-                                                <li>
-                                                    <a href="manage_accounts.php"><i class="glyphicon glyphicon-cog"></i> Manage Inactive Accounts</a>
-                                                </li>
-                                            </ul>
-                                            <!-- /.dropdown-menu -->
-                                        </li>
-                                        <!-- /.dropdown -->
-                                    </ul>
-
-                            </div>
+                            List of Deleted Contacts
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -130,7 +108,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        $query = $contact_db->get_all_contacts();
+                                        $query = $contact_db->get_deleted_accounts();
 
                                         $tds = '';
                                         $td = '';
@@ -160,16 +138,16 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- Delete modal -->
-    <div class="modal fade" id="delete-modal" role="dialog">
+    <!-- Restore modal -->
+    <div class="modal fade" id="restore-modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p>Do you want to deactivate this account?</p>
+                    <p>Do you want to restore this account?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-md btn-default" data-dismiss="modal" id="btnNo">Cancel</button>
-                    <button type="button" class="btn btn-md btn-danger" data-dismiss="modal" id="btnYes">Deactivate</button>
+                    <button type="button" class="btn btn-md btn-success" data-dismiss="modal" id="RestoreButton">Restore</button>
                 </div>
             </div>  
         </div>
@@ -197,21 +175,17 @@
     <script>
         var contact_id = null
 
-        $("#btnYes").click(function () {
-            window.location = "remove_contact.php?contact_id=" + contact_id
+        $("#RestoreButton").click(function () {
+            window.location = "restore.php?contact_id=" + contact_id;
         });
 
         $("#btnNo").click(function () {
             $("#delete-modal").modal("hide");
         });
 
-        function show_delete_modal(id) {
+        function show_restore_modal(id) {
             contact_id = id;
-            $("#delete-modal").modal("show");
-        }
-
-        function update_contact(id) {
-            window.location = "update_contact.php?contact_id=" + id;
+            $("#restore-modal").modal("show");
         }
 
     </script>

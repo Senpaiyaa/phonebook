@@ -2,25 +2,25 @@
     require_once 'class/Contacts.php';
     $contact_db = new Contacts();
 
+    $contact_id = (int) $_GET["contact_id"];
+    $contact = $contact_db->view_contact($contact_id);
+
     function create_contact($contact) {
         $contact_id = $contact["contact_id"];
         $fullName  = $contact["first_name"].' '.$contact["last_name"];
         $email = $contact["email"];
         $mail = '<a href="mailto:' . $email . '"> ' . $email . ' </a>';
-        $edit = '<a id="edit" class="pointer pull-right" onClick="update_contact('.$contact_id.')"><span class="glyphicon glyphicon-pencil"></span> Edit</a>';
-        $delete = '<a class="pointer pull-right link-red" style="margin-left: 15px;" onClick="show_delete_modal('.$contact_id.')"><span class="glyphicon glyphicon-remove"></span> Delete</a>';
         $html = '
             <tr id="'.$contact['contact_id'].'" class="td-contact">
                 <td class="image text-center"><img src="'.$contact["path"].'" alt="Photo" width="100" height="100"></td>
-                <td class="firstName text-center"><a href="view_contact.php?contact_id='.$contact_id.'">' . $fullName . '</a></td>
+                <td class="firstName text-center">' . $fullName . '</td>
                 <td class="email text-center">' . $mail . '</td>
                 <td class="contact_number text-center">' . $contact["contact_number"] . '</td>
                 <td class="address text-center">' . $contact["address"] . '</td>
-
-                <td>' . $delete . $edit . '</td>
             </tr>';
         return $html;
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -90,34 +90,13 @@
             <br>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-default">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
-                            List of Available Contacts
-                            <div class="pull-right button_option">
-                                <a href="insert_contact.php" class="btn btn-primary insertContactButton">New Contact</a>
-                                <ul class="nav navbar-right item_config">
-                                        <li class="dropdown pull-right">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                <i class="fa fa-ellipsis-h"></i>
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                <li class="visible-sm visible-xs">
-                                                    <a href="new_employee.php"><i class="glyphicon glyphicon-plus"></i> Add New Employee </a>
-                                                </li>
-                                                <li>
-                                                    <a href="manage_accounts.php"><i class="glyphicon glyphicon-cog"></i> Manage Inactive Accounts</a>
-                                                </li>
-                                            </ul>
-                                            <!-- /.dropdown-menu -->
-                                        </li>
-                                        <!-- /.dropdown -->
-                                    </ul>
-
-                            </div>
+                            <h3>Contact Information <span><i class="fa fa-user"></i></span></h3>
                         </div>
-                        <!-- /.panel-heading -->
+
                         <div class="panel-body">
-                        <table width="100%" class="table table-hover" id="contact_list" >
+                        <table width="100%" class="table table-hover table-bordered" id="contact_list" >
                                 <thead>
                                     <tr>
                                         <th class="text-center">Profile Picture</th>
@@ -125,7 +104,6 @@
                                         <th class="text-center">Email</th>
                                         <th class="text-center">Contact Number</th>
                                         <th class="text-center">Address</th>
-                                        <th id="action" class="text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -160,21 +138,6 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- Delete modal -->
-    <div class="modal fade" id="delete-modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <p>Do you want to deactivate this account?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-md btn-default" data-dismiss="modal" id="btnNo">Cancel</button>
-                    <button type="button" class="btn btn-md btn-danger" data-dismiss="modal" id="btnYes">Deactivate</button>
-                </div>
-            </div>  
-        </div>
-    </div>
-
     <!-- jQuery -->
     <script src="vendor/jquery/jquery.min.js"></script>
 
@@ -192,29 +155,6 @@
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
 
-    <script src="js/main.js"></script>
-
-    <script>
-        var contact_id = null
-
-        $("#btnYes").click(function () {
-            window.location = "remove_contact.php?contact_id=" + contact_id
-        });
-
-        $("#btnNo").click(function () {
-            $("#delete-modal").modal("hide");
-        });
-
-        function show_delete_modal(id) {
-            contact_id = id;
-            $("#delete-modal").modal("show");
-        }
-
-        function update_contact(id) {
-            window.location = "update_contact.php?contact_id=" + id;
-        }
-
-    </script>
 </body>
 
 </html>

@@ -1,0 +1,32 @@
+.insertContactButton {
+  height: 35px;
+  margin-top: -5px;
+}
+
+.button_option {
+  margin-right: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+a.link-red {
+  color: red;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.item_config {
+  /*background: #F2F6F9;*/
+  margin-top: -8px;
+  margin-left: 5px;
+  background-color: #eee;
+  font-size: 14px;
+}
+
+.dataTable > thead > tr > th#action[class*="sort"]:after {
+  display: none;
+}
