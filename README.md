@@ -1,4 +1,4 @@
-# phonebook-app
+# phonebook
 Basic Contact list
 1. Ability to view/add/edit/delete contacts
     a. name
