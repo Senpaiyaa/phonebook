@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 # phonebook-app
 
+=======
+# phonebook
+>>>>>>> 840772f947afaa3e57723c2c71e0e480359ee702
 Basic Contact list
 
 1. Ability to view/add/edit/delete contacts
