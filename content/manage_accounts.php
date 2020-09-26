@@ -118,8 +118,14 @@
                                         }
 
                                         $td .= $tds;
+                                        $tdIsEmpty = "<span class='text-danger'>Message: No result found.</span>";
 
-                                        echo $td;
+                                        if (empty($td)) {
+                                            echo $tdIsEmpty;
+                                        } else {
+                                            echo $td;
+                                        }
+
                                     ?>
                                 </tbody>
                             </table>
@@ -169,8 +175,6 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
-
-    <script src="js/main.js"></script>
 
     <script>
         var contact_id = null

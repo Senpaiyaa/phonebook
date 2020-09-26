@@ -1,35 +1,25 @@
 <?php
-    require_once 'class/Contacts.php';
     require_once 'class/Notes.php';
+    require_once 'class/functions.php';
 
-    $contact_db = new Contacts();
-    $notes_db   = new Notes();    
+    $notes_db = new Notes();
 
-    function create_contact($contact) {
-        global $notes_db;
+    if (isset($_POST["submit"])) {
+        $contact_notes = escape($_POST["notes"]);
 
-        $contact_id = $contact["contact_id"];
-        $fullName  = $contact["first_name"].' '.$contact["last_name"];
-        $email = $contact["email"];
-        $mail = '<a href="mailto:' . $email . '"> ' . $email . ' </a>';
-        $edit = '<a id="edit" class="pointer pull-right" onClick="update_contact('.$contact_id.')"><span class="glyphicon glyphicon-pencil"></span> Edit</a>';
-        $delete = '<a class="pointer pull-right link-red" style="margin-left: 15px;" onClick="show_delete_modal('.$contact_id.')"><span class="glyphicon glyphicon-remove"></span> Delete</a>';
+        $notes = $notes_db->insert_notes($contact_notes);
+    }
 
-        $notes = $notes_db->get_notes($contact["notes_id"]);
-
+    function create_notes($notes) {
+        $notes_id = $notes["notes_id"];
+        $contact_notes  = $notes["contact_notes"];
         $html = '
-            <tr id="'.$contact['contact_id'].'" class="td-contact">
-                <td class="image text-center"><img src="'.$contact["path"].'" alt="Photo" width="100" height="100" class="img-circle"></td>
-                <td class="firstName text-center"><a href="view_contact.php?contact_id='.$contact_id.'">' . $fullName . '</a></td>
-                <td class="email text-center">' . $mail . '</td>
-                <td class="contact_number text-center">' . $contact["contact_number"] . '</td>
-                <td class="address text-center">' . $contact["address"] . '</td>
-                <td class="notes text-center">' . $notes["contact_notes"] . '</td>
-
-                <td>' . $delete . $edit . '</td>
+            <tr id="'.$notes['notes_id'].'" class="td-notes">
+                <td class="notes text-center">' . $contact_notes . '</td>
             </tr>';
         return $html;
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -102,57 +92,35 @@
         </nav>
 
         <div id="page-wrapper">
-            <br>
+            <!-- <p>&nbsp;</p> -->
+            <!-- <br> -->
+            <span>&nbsp;</span>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" >
                         <div class="panel-heading">
-                            List of Available Contacts
+                            Manage Notes
                             <div class="pull-right button_option">
-                                <a href="insert_contact.php" class="btn btn-primary insertContactButton">New Contact</a>
-                                <ul class="nav navbar-right item_config">
-                                        <li class="dropdown pull-right">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                <i class="fa fa-ellipsis-h"></i>
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                <li class="visible-sm visible-xs">
-                                                    <a href="new_employee.php"><i class="glyphicon glyphicon-plus"></i> Add New Employee </a>
-                                                </li>
-                                                <li>
-                                                    <a href="manage_accounts.php"><i class="glyphicon glyphicon-cog"></i> Manage Inactive Accounts</a>
-                                                </li>
-                                            </ul>
-                                            <!-- /.dropdown-menu -->
-                                        </li>
-                                        <!-- /.dropdown -->
-                                    </ul>
-
+                                <a href="#" data-toggle="modal" data-target="#add_notes"><span class="fa fa-plus"></span> New Notes</a>
                             </div>
                         </div>
                         <!-- /.panel-heading -->
-                        <div class="panel-body">
-                        <table width="100%" class="table table-hover" id="contact_list" >
+                        <div class="panel-body" >
+                            <table class="table table-bordered table-striped" id="notes-list" style="width:50%; margin: 0 auto;">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Profile Picture</th>
-                                        <th class="text-center">Name</th>
-                                        <th class="text-center">Email</th>
-                                        <th class="text-center">Contact Number</th>
-                                        <th class="text-center">Address</th>
-                                        <th class="text-center">Notes</th>
-                                        <th id="action" class="text-right">Action</th>
+                                        <th class="text-center">Available Notes</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                        $query = $contact_db->get_all_contacts();
+                                <?php
+                                        $query = $notes_db->get_all_notes();
 
                                         $tds = '';
                                         $td = '';
 
-                                        foreach ($query as $contact) {
-                                            $tds .= create_contact($contact);
+                                        foreach ($query as $notes) {
+                                            $tds .= create_notes($notes);
                                         }
 
                                         $td .= $tds;
@@ -167,6 +135,7 @@
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
+
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -180,21 +149,37 @@
 
     </div>
     <!-- /#wrapper -->
+    <form method="post" autocomplete="off" role="form" id="notes_form">
+        <div class="modal fade" id="add_notes" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title">Please enter Notes</h4>
+                    </div>
+                    <div class="modal-body"> 
+                            <div class="form-group">
+                                <label for="add_notes" class="col-sm-3 col-md-3 col-lg-2 control-label wide">Notes:</label>
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    <input name="notes" value="" id="notes" class="form-control form-inps" type="text">
+                                </div>
+                            </div>
+                    </div>
 
-    <!-- Delete modal -->
-    <div class="modal fade" id="delete-modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <p>Do you want to deactivate this account?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-md btn-default" data-dismiss="modal" id="btnNo">Cancel</button>
-                    <button type="button" class="btn btn-md btn-danger" data-dismiss="modal" id="btnYes">Deactivate</button>
-                </div>
-            </div>  
+                    <div class="modal-footer" style="margin-top: 40px;">
+                        <button type="submit" class="btn btn-primary pull-right" name="submit">Submit</button>
+                    </div>
+                </div>  
+            </div>
         </div>
+    </form>
+    <!-- /#add_category -->
+
     </div>
+    <!-- /#wrapper -->
 
     <!-- jQuery -->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -234,11 +219,10 @@
         }
 
         $(document).ready(function() {
-            $('#contact_list').DataTable({
+            $('#notes-list').DataTable({
                 responsive: true
             });
         });
-
     </script>
 </body>
 

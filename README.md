@@ -1,22 +1,25 @@
 <<<<<<< HEAD
+
 # phonebook-app
 
 =======
+
 # phonebook
->>>>>>> 840772f947afaa3e57723c2c71e0e480359ee702
-Basic Contact list
+
+> > > > > > > 840772f947afaa3e57723c2c71e0e480359ee702
+> > > > > > > Basic Contact list
 
 1. Ability to view/add/edit/delete contacts
    a. name
    b. email
    c. contact number
    d. address
-2. Ability to attach basic notes to the contact if the user has any (WIP)
+2. Ability to attach basic notes to the contact if the user has any
 3. Ability to attach an image/avatar to the contact if the user has any
 
 The following items are not required but would be a bonus
 
-- An activity log on actions performed on a contact record (WIP)
+- An activity log on actions performed on a contact record
 - Implement soft delete and restore on contact records
 - Implement websockets - by having another page or a frame that gets updated when a contact record is updated
 

@@ -1,8 +1,10 @@
 <?php
     require_once 'class/functions.php';
     require_once 'class/Contacts.php';
+    require_once 'class/Notes.php';
 
-    $contacts_db = new Contacts();
+    $contacts_db    = new Contacts();
+    $notes_db       = new Notes();
 
     if (isset($_POST["submit"])) {
         $firstName      = escape($_POST["firstName"]);
@@ -10,6 +12,7 @@
         $email          = escape($_POST["email"]);
         $contact_number = escape($_POST["contact_number"]);
         $address        = escape($_POST["address"]);
+        $notes          = escape($_POST["notes_id"]);
 
         if ( isset($_FILES["fileToUpload"]) ) {
             $target_dir = "uploads/";
@@ -19,26 +22,27 @@
     
             // Check if file already exists
             if (file_exists($target_file)) {
-                echo "Sorry, file already exists.";
                 $uploadOk = 0;
             }
     
             // Check file size
             if ($_FILES["fileToUpload"]["size"] > 500000) {
-                echo "Sorry, your file is too large.";
                 $uploadOk = 0;
             }
     
             // Allow certain file formats
             if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
             && $imageFileType != "gif" ) {
-                echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                $message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed. <a href='insert_contact.php'> Go Back to the previous page.</a>";
+                if ($message) {
+                    echo $message;
+                    exit(1);
+                }
                 $uploadOk = 0;
             }
     
             // Check if $uploadOk is set to 0 by an error
             if ($uploadOk == 0) {
-                echo "Sorry, your file was not uploaded.";
             // if everything is ok, try to upload file
             } else {
                 if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
@@ -52,7 +56,9 @@
             // echo '<pre>' . var_export($new_path, true) . '</pre>';    
         }
 
-        $contacts_db->insert_contacts($firstName, $lastName, $email, $contact_number, $path, $address);
+        $activity = "Contact with name ".$firstName . ' ' . $lastName . ' ' . " has been created.";
+        $contacts_db->create_activity($activity);
+        $contacts_db->insert_contacts($firstName, $lastName, $email, $contact_number, $path, $address, $notes);
         $message = '<div class="alert alert-success">Contact has been added.</div>';
     }
 
@@ -136,7 +142,7 @@
                                     <div class="col-md-12">
                                         
                                         <div class="form-group">
-                                            <label for="insertPicture" class="col-sm-3 col-md-3 col-lg-2 control-label wide">Select Image:</label>
+                                            <label for="insertPicture" class="col-sm-3 col-md-3 col-lg-2 control-label wide">Profile Picture:</label>
                                             <div class="col-sm-9 col-md-9 col-lg-10">
                                                 <input type="file" name="fileToUpload" id="fileToUpload">
                                             </div>
@@ -175,6 +181,22 @@
                                                 <input name="address" id="address" class="form-control" type="text">
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="notes_id" class="col-sm-3 col-md-3 col-lg-2 control-label wide">Notes:</label>
+                                            <div class="col-sm-9 col-md-9 col-lg-10">
+                                                <select id="notes_id" class="form-control" name="notes_id">
+                                                    <?php
+                                                        $contact_notes = $notes_db->option_notes();
+                                                        $option = "";
+                                                        foreach ($contact_notes as $notes) {
+                                                            $option .= option($notes['contact_notes'], $notes['notes_id']);
+                                                        }
+                                                        echo $option;
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <!-- /.col-lg-6 (nested) -->
                                 </div>

@@ -1,7 +1,10 @@
 <?php
     require_once 'class/functions.php';
     require_once 'class/Contacts.php';
+    require_once 'class/Notes.php';
+
     $contact_db = new Contacts();
+    $notes_db       = new Notes();
 
     $id         = (int) $_GET["contact_id"];
     $contact    = $contact_db->view_contact($id);
@@ -18,9 +21,12 @@
         $email          = escape($_POST["email"]);
         $contact_number = escape($_POST["contact_number"]);
         $address        = escape($_POST["address"]);
+        $notes          = escape($_POST["notes_id"]);
 
-        $contact = $contact_db->update_contacts($id, $firstName, $lastName, $email, $contact_number, $address);
-        $message = '<div class="alert alert-success">Contact has been updated.</div>';
+        $activity = "Contact with name ".$firstName . ' ' . $lastName . ' ' . " has been updated.";
+        $contact_db->create_activity($activity);
+        $contact = $contact_db->update_contacts($id, $firstName, $lastName, $email, $contact_number, $notes, $address);
+        $message = '<div class="alert alert-success">Contact has been updated. <a href="index.php">Back</a></div>';
     }
 
 ?>
@@ -135,6 +141,22 @@
                                                 <input name="address" id="address" class="form-control" type="text" value="<?php echo $address;?>">
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="notes_id" class="col-sm-3 col-md-3 col-lg-2 control-label wide">Notes:</label>
+                                            <div class="col-sm-9 col-md-9 col-lg-10">
+                                                <select id="notes_id" class="form-control" name="notes_id">
+                                                    <?php
+                                                        $contact_notes = $notes_db->option_notes();
+                                                        $option = "";
+                                                        foreach ($contact_notes as $notes) {
+                                                            $option .= option($notes['contact_notes'], $notes['notes_id']);
+                                                        }
+                                                        echo $option;
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <!-- /.col-lg-6 (nested) -->
 
@@ -179,7 +201,6 @@
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
 
-    <script src="js/main.js"></script>
 </body>
 
 </html>

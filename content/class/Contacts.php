@@ -11,13 +11,13 @@
             return parent::select($query);
         }
 
-        public function insert_contacts($firstName, $lastName, $email, $contact_number, $path, $address) {
-			$query = "INSERT INTO ".static::$table. " (`first_name`, `last_name`, `email`, `contact_number`, `path` , `address`) VALUES ('$firstName', '$lastName', '$email', '$contact_number', '$path', '$address')";
+        public function insert_contacts($firstName, $lastName, $email, $contact_number, $path, $address, $notes) {
+			$query = "INSERT INTO ".static::$table. " (`first_name`, `last_name`, `email`, `contact_number`, `path` , `address`, `notes_id`) VALUES ('$firstName', '$lastName', '$email', '$contact_number', '$path', '$address', '$notes')";
 			return parent::query($query);
 		}
 
-		public function update_contacts($contact_id, $firstName, $lastName, $email, $contact_number, $address) {
-			$query = "UPDATE ".static::$table. " SET `first_name`='$firstName',`last_name`='$lastName',`email`='$email',`contact_number`='$contact_number',`address`='$address' WHERE contact_id = '$contact_id'";
+		public function update_contacts($contact_id, $firstName, $lastName, $email, $contact_number, $notes, $address) {
+			$query = "UPDATE ".static::$table. " SET `first_name`='$firstName',`last_name`='$lastName',`email`='$email',`contact_number`='$contact_number',`notes_id`='$notes',`address`='$address' WHERE contact_id = '$contact_id'";
 			return parent::query($query);
         }
         
@@ -45,5 +45,16 @@
 			return parent::select($query);
 		}
 
+		public function create_activity($activity) {
+			date_default_timezone_set("Asia/Kuala_Lumpur");
+			$date_logged = date('Y-m-d H:i:s');
+			$query = "INSERT INTO `activity_log`(`user_activity`, `date_logged`) VALUES ('$activity', '$date_logged')";
+			return parent::query($query);
+		}
+
+		public function get_logs() {
+			$query = "SELECT * FROM `activity_log`";
+			return parent::select($query);
+		}
     }
 ?>

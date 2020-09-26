@@ -4,23 +4,6 @@
 
     $contact_id = (int) $_GET["contact_id"];
     $contact = $contact_db->view_contact($contact_id);
-
-    function create_contact($contact) {
-        $contact_id = $contact["contact_id"];
-        $fullName  = $contact["first_name"].' '.$contact["last_name"];
-        $email = $contact["email"];
-        $mail = '<a href="mailto:' . $email . '"> ' . $email . ' </a>';
-        $html = '
-            <tr id="'.$contact['contact_id'].'" class="td-contact">
-                <td class="image text-center"><img src="'.$contact["path"].'" alt="Photo" width="100" height="100"></td>
-                <td class="firstName text-center">' . $fullName . '</td>
-                <td class="email text-center">' . $mail . '</td>
-                <td class="contact_number text-center">' . $contact["contact_number"] . '</td>
-                <td class="address text-center">' . $contact["address"] . '</td>
-            </tr>';
-        return $html;
-    }
-
 ?>
 
 <!DOCTYPE html>
@@ -107,20 +90,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                        $query = $contact_db->get_all_contacts();
+                                    <tr>
+                                        <!-- <td><?php echo $employee['fname']; ?></td> -->
+                                        <td class="image text-center"><img src="<?php echo $contact["path"]?>" alt="Photo" width="100" height="100"></td>
+                                        <td class="firstName text-center"><?php echo $contact["first_name"] . ' ' . $contact["last_name"]; ?></td>
+                                        <td class="email text-center"><?php echo $contact["email"]; ?></td>
+                                        <td class="contact_number text-center"><?php echo $contact["contact_number"]; ?></td>
+                                        <td class="address text-center"><?php echo $contact["address"]; ?></td>
 
-                                        $tds = '';
-                                        $td = '';
+                                    </tr>
 
-                                        foreach ($query as $contact) {
-                                            $tds .= create_contact($contact);
-                                        }
-
-                                        $td .= $tds;
-
-                                        echo $td;
-                                    ?>
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->

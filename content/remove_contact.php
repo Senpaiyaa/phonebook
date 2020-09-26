@@ -3,6 +3,9 @@
     $contact_db = new Contacts();
 
     $contact_id = (int) $_GET["contact_id"];
+
+    $activity = "A contact with id " .$contact_id. " has been deleted.";
+    $contact_db->create_activity($activity);
     $contact    = $contact_db->remove_contact($contact_id);
 ?>
 
@@ -97,12 +100,6 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
-
-    <script src="js/main.js"></script>
-
-    <script>
-
-    </script>
 </body>
 
 </html>
