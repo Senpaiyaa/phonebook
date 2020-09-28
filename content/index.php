@@ -93,7 +93,9 @@
                         <li>
                             <a href="activity_logs.php"><i class="fa fa-lock"></i> Activity Log</a>
                         </li>
-
+                        <li>
+                            <a href="https://github.com/Senpaiyaa/phonebook" target="_blank"><i class="fa fa-code-fork"></i> Github</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

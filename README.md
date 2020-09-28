@@ -22,4 +22,4 @@ Technology to be used
 2. MySQL
 3. Any PHP MVC framework is allowed, but Laravel or Zend Framework is preferred if one will be used.
 
-Link: https://phonebookrepo.000webhostapp.com/content/index.php
+Live Demo: https://phonebookrepo.000webhostapp.com/content/index.php
