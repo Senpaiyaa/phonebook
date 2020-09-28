@@ -26,7 +26,3 @@ a.link-red {
   background-color: #eee;
   font-size: 14px;
 }
-
-.dataTable > thead > tr > th#action[class*="sort"]:after {
-  display: none;
-}
