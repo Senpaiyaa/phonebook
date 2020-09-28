@@ -1,13 +1,6 @@
-<<<<<<< HEAD
-
 # phonebook-app
 
-=======
-
-# phonebook
-
-> > > > > > > 840772f947afaa3e57723c2c71e0e480359ee702
-> > > > > > > Basic Contact list
+Basic Contact list
 
 1. Ability to view/add/edit/delete contacts
    a. name
@@ -28,3 +21,5 @@ Technology to be used
 1. PHP
 2. MySQL
 3. Any PHP MVC framework is allowed, but Laravel or Zend Framework is preferred if one will be used.
+
+Link: https://phonebookrepo.000webhostapp.com/content/index.php

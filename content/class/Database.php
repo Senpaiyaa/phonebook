@@ -32,8 +32,8 @@
 
         public function connect() {    
             if(!isset(self::$connection)) {
-                $config = parse_ini_file(__DIR__ . '\config.ini');
-                self::$connection = new mysqli($config['DB_SERVER'],$config['DB_USER'],"",$config['DB_NAME']);
+                $config = parse_ini_file('config.ini');
+                self::$connection = new mysqli($config['DB_SERVER'], $config['DB_USER'], $config['DB_PASSWORD'], $config['DB_NAME']);
             } else {
                 if (!self::$connection) {
                     die("Database connection/selection failed: " . mysqli_error($connection));
