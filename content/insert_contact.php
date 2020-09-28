@@ -33,11 +33,8 @@
             // Allow certain file formats
             if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
             && $imageFileType != "gif" ) {
-                $message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed. <a href='insert_contact.php'> Go Back to the previous page.</a>";
-                if ($message) {
-                    echo $message;
-                    exit(1);
-                }
+                redirect_to("error.php");
+                exit(1);
                 $uploadOk = 0;
             }
     
@@ -120,6 +117,13 @@
                         <li>
                             <a href="index.php"><i class="fa fa-users"></i> Contacts</a>
                         </li>
+                        <li>
+                            <a href="notes.php"><i class="fa fa-book"></i> Manage Notes</a>
+                        </li>
+                        <li>
+                            <a href="activity_logs.php"><i class="fa fa-lock"></i> Activity Log</a>
+                        </li>
+
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

@@ -109,7 +109,10 @@
                         <div class="panel-heading">
                             List of Available Contacts
                             <div class="pull-right button_option">
-                                <a href="insert_contact.php" class="btn btn-primary insertContactButton">New Contact</a>
+                                <a href="insert_contact.php" class="hidden-sm hidden-xs">
+                                    <span class="fa fa-plus"></span>
+                                    New Contact
+                                </a>
                                 <ul class="nav navbar-right item_config">
                                         <li class="dropdown pull-right">
                                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -120,7 +123,7 @@
                                                     <a href="new_employee.php"><i class="glyphicon glyphicon-plus"></i> Add New Employee </a>
                                                 </li>
                                                 <li>
-                                                    <a href="manage_accounts.php"><i class="glyphicon glyphicon-cog"></i> Manage Inactive Accounts</a>
+                                                    <a href="manage_accounts.php"><i class="glyphicon glyphicon-cog"></i> Manage Deleted Accounts</a>
                                                 </li>
                                             </ul>
                                             <!-- /.dropdown-menu -->
@@ -135,13 +138,13 @@
                         <table width="100%" class="table table-hover" id="contact_list" >
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Profile Picture</th>
+                                        <th>Profile Picture</th>
                                         <th class="text-center">Name</th>
                                         <th class="text-center">Email</th>
                                         <th class="text-center">Contact Number</th>
                                         <th class="text-center">Address</th>
                                         <th class="text-center">Notes</th>
-                                        <th id="action" class="text-right">Action</th>
+                                        <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -186,11 +189,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p>Do you want to deactivate this account?</p>
+                    <p>Do you want to delete this account?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-md btn-default" data-dismiss="modal" id="btnNo">Cancel</button>
-                    <button type="button" class="btn btn-md btn-danger" data-dismiss="modal" id="btnYes">Deactivate</button>
+                    <button type="button" class="btn btn-md btn-danger" data-dismiss="modal" id="btnYes">Delete</button>
                 </div>
             </div>  
         </div>
@@ -235,7 +238,14 @@
 
         $(document).ready(function() {
             $('#contact_list').DataTable({
-                responsive: true
+                responsive: true,
+                aoColumnDefs: [
+                    {
+                        bSortable: false,
+                        className: "text-center",
+                        aTargets: [ -1, -7 ]
+                    }
+                ]
             });
         });
 

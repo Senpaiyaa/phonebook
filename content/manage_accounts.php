@@ -7,7 +7,7 @@
         $fullName  = $contact["first_name"].' '.$contact["last_name"];
         $email = $contact["email"];
         $mail =  $email;
-        $reactivate = '<a class="pointer pull-right btn btn-success" onClick="show_restore_modal('.$contact_id.')">Reactivate</a>';
+        $reactivate = '<a class="pointer pull-right btn btn-success" onClick="show_restore_modal('.$contact_id.')">Restore</a>';
         $html = '
             <tr id="'.$contact['contact_id'].'" class="td-contact">
                 <td class="image text-center"><img src="'.$contact["path"].'" alt="Photo" width="100" height="100"></td>
@@ -76,6 +76,12 @@
                     <ul class="nav" id="side-menu">
                         <li>
                             <a href="index.php"><i class="fa fa-users"></i> Contacts</a>
+                        </li>
+                        <li>
+                            <a href="notes.php"><i class="fa fa-book"></i> Manage Notes</a>
+                        </li>
+                        <li>
+                            <a href="activity_logs.php"><i class="fa fa-lock"></i> Activity Log</a>
                         </li>
 
                     </ul>
